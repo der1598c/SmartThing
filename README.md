@@ -6,4 +6,4 @@ iOS (SwiftUI) App implementation, Remote control through Mqtt and ESP8266, Combi
 
 App can flexibly add devices and communicate through MQTT Brocker. Not only that, but also Siri control (requires Homebridge support).
 
-[video-link]: <https://youtu.be/frPVWwqE5Ck>
+[video-link]: <https://youtu.be/chMf_Wr92Kw>
