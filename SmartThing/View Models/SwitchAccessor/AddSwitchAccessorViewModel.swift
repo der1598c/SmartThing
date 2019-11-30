@@ -16,6 +16,6 @@ class AddSwitchAccessorViewModel {
     var topicName_setOn: String = ""
     
     func saveSwitchAccessor() {
-        CoreDataManager.shared.saveSwitchAccessor(labelName: labelName, topicName_getOn: topicName_getOn, topicName_setOn: topicName_setOn)
+        CoreDataManager.shared.saveAccessor(accessorVM: self)
     }
 }

@@ -26,7 +26,8 @@ class ValueAccessorListViewModel: ObservableObject {
     }
     
     func fetchAllValueAccessories() {
-        self.valueAccessories = CoreDataManager.shared.getAllValueAccessories().map(ValueAccessorViewModel.init)
+        let allValueAccessories: [ValueAccessor] = CoreDataManager.shared.getAllAccessories(accessorType: .ValueAccessor)!
+        self.valueAccessories = allValueAccessories.map(ValueAccessorViewModel.init)
         print(self.valueAccessories)
     }
 

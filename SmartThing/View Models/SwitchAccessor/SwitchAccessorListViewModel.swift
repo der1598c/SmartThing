@@ -21,13 +21,13 @@ class SwitchAccessorListViewModel: ObservableObject {
     }
     
     func deleteSwitchAccessor(_ switchAccessorVM: SwitchAccessorViewModel) {
-//        CoreDataManager.shared.deleteSwitchAccessor(labelName: switchAccessorVM.labelName)
         CoreDataManager.shared.deleteAccessor(labelName: switchAccessorVM.labelName, accessorType: .SwitchAccessor)
         fetchAllSwitchAccessories()
     }
     
     func fetchAllSwitchAccessories() {
-        self.switchAccessories = CoreDataManager.shared.getAllSwitchAccessories().map(SwitchAccessorViewModel.init)
+        let allSwitchAccessories: [SwitchAccessor] = CoreDataManager.shared.getAllAccessories(accessorType: .SwitchAccessor)!
+        self.switchAccessories = allSwitchAccessories.map(SwitchAccessorViewModel.init)
         print(self.switchAccessories)
     }
 

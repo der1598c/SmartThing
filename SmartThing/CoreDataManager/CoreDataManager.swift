@@ -53,19 +53,6 @@ class CoreDataManager {
         
     }
     
-//    func deleteSwitchAccessor(labelName: String) {
-//
-//        do {
-//            if let switchAccessor = fetchSwitchAccessor(labelName: labelName) {
-//                self.moc.delete(switchAccessor)
-//                try self.moc.save()
-//            }
-//        } catch let error as NSError {
-//            print(error)
-//        }
-//
-//    }
-    
     func deleteAccessor(labelName: String, accessorType: AccessorType) {
         
         switch accessorType {
@@ -92,60 +79,57 @@ class CoreDataManager {
         }
     }
     
-    
-    func getAllSwitchAccessories() -> [SwitchAccessor] {
+    func getAllAccessories<T>(accessorType: AccessorType) -> [T]? {
         
-        var switchAccessories = [SwitchAccessor]()
-        
-        let request: NSFetchRequest<SwitchAccessor> = SwitchAccessor.fetchRequest()
-        
-        do {
-            switchAccessories = try self.moc.fetch(request)
-        } catch let error as NSError {
-            print(error)
+        switch accessorType {
+            
+        case .SwitchAccessor:
+            
+            var switchAccessories = [SwitchAccessor]()
+            
+            let request: NSFetchRequest<SwitchAccessor> = SwitchAccessor.fetchRequest()
+            
+            do {
+                switchAccessories = try self.moc.fetch(request)
+            } catch let error as NSError {
+                print(error)
+            }
+            
+            return (switchAccessories as! [T])
+            
+        case .ValueAccessor:
+            
+            var valueAccessories = [ValueAccessor]()
+            
+            let request: NSFetchRequest<ValueAccessor> = ValueAccessor.fetchRequest()
+            
+            do {
+                valueAccessories = try self.moc.fetch(request)
+            } catch let error as NSError {
+                print(error)
+            }
+            
+            return (valueAccessories as! [T])
         }
-        
-        return switchAccessories
-        
-    }
-        
-    func getAllValueAccessories() -> [ValueAccessor] {
-        
-        var valueAccessories = [ValueAccessor]()
-        
-        let request: NSFetchRequest<ValueAccessor> = ValueAccessor.fetchRequest()
-        
-        do {
-            valueAccessories = try self.moc.fetch(request)
-        } catch let error as NSError {
-            print(error)
-        }
-        
-        return valueAccessories
-        
-    }
-    
-    func saveSwitchAccessor(labelName: String, topicName_getOn: String, topicName_setOn: String) {
-        
-        let switchAccessor = SwitchAccessor(context: self.moc)
-        switchAccessor.labelName = labelName
-        switchAccessor.topicName_getOn = topicName_getOn
-        switchAccessor.topicName_setOn = topicName_setOn
-        
-        do {
-            try self.moc.save()
-        } catch let error as NSError {
-            print(error)
-        }
-        
     }
     
-    func saveValueAccessor(labelName: String, valueType: String, topicName: String) {
+    func saveAccessor<T>(accessorVM: T) {
         
-        let valueAccessor = ValueAccessor(context: self.moc)
-        valueAccessor.labelName = labelName
-        valueAccessor.valueType = valueType
-        valueAccessor.topicName = topicName
+        if accessorVM is AddValueAccessorViewModel {
+            let valueAccessorVM = accessorVM as! AddValueAccessorViewModel
+            let valueAccessor = ValueAccessor(context: self.moc)
+            valueAccessor.labelName = valueAccessorVM.labelName
+            valueAccessor.valueType = valueAccessorVM.valueType
+            valueAccessor.topicName = valueAccessorVM.topicName
+        }
+        
+        if accessorVM is AddSwitchAccessorViewModel {
+            let valueAccessorVM = accessorVM as! AddSwitchAccessorViewModel
+            let switchAccessor = SwitchAccessor(context: self.moc)
+            switchAccessor.labelName = valueAccessorVM.labelName
+            switchAccessor.topicName_getOn = valueAccessorVM.topicName_getOn
+            switchAccessor.topicName_setOn = valueAccessorVM.topicName_setOn
+        }
         
         do {
             try self.moc.save()

@@ -16,6 +16,6 @@ class AddValueAccessorViewModel {
     var topicName: String = ""
     
     func saveValueAccessor() {
-        CoreDataManager.shared.saveValueAccessor(labelName: labelName, valueType: valueType, topicName: topicName)
+        CoreDataManager.shared.saveAccessor(accessorVM: self)
     }
 }
