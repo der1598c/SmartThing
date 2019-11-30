@@ -48,7 +48,7 @@ struct AddAccessoriesView: View {
                     .padding()
             }
             
-            Button("Place SwitchAccessor") {
+            Button(self.accessorType == AccessorType.SwitchAccessor ? "Place Switch Accessor" : "Place Value Accessor") {
                 // place order
                 if self.accessorType == AccessorType.SwitchAccessor {
                     self.addSwitchAccessorVM.saveSwitchAccessor()
