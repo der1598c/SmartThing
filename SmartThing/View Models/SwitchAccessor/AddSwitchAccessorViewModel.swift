@@ -15,7 +15,12 @@ class AddSwitchAccessorViewModel {
     var topicName_getOn: String = ""
     var topicName_setOn: String = ""
     
-    func saveSwitchAccessor() {
-        CoreDataManager.shared.saveAccessor(accessorVM: self)
+    func saveSwitchAccessor(success: @escaping (Bool) -> ()) {
+        if labelName.count != 0 && topicName_getOn.count != 0 && topicName_setOn.count != 0 {
+            CoreDataManager.shared.saveAccessor(accessorVM: self)
+            success(true)
+        } else {
+            success(false)
+        }
     }
 }

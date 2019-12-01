@@ -14,6 +14,8 @@ struct MainView: View {
     @ObservedObject var valueAccessorListVM: ValueAccessorListViewModel
     @State private var isPresented: Bool = false
     
+    let screenSize = UIScreen.main.bounds
+    
     init() {
         self.switchAccessorListVM = SwitchAccessorListViewModel()
         self.valueAccessorListVM = ValueAccessorListViewModel()
@@ -41,19 +43,6 @@ struct MainView: View {
     var body: some View {
         
         NavigationView {
-//            VStack {
-//
-//                SwitchWidgetView(labelName: "Switch", topicName_getOn: "Switch/getOn", topicName_setOn: "Switch/setOn")
-//                    .padding()
-//
-//                VStack {
-//                    ValueWidgetView(labelName: "Temperature", valueType: .Temperature, topicName: "Value/Temperature")
-//
-//                    ValueWidgetView(labelName: "Humidity", valueType: .Humidity, topicName: "Value/Humidity")
-//                }.padding()
-//
-//            }.background(Color.yellow)
-//            .cornerRadius(16)
             
             VStack {
                 List {
@@ -62,22 +51,24 @@ struct MainView: View {
                         HStack {
                             
                             SwitchWidgetView(labelName: switchAccessor.labelName, topicName_getOn: switchAccessor.topicName_getOn, topicName_setOn: switchAccessor.topicName_setOn)
+                                .frame(minWidth: 0, maxWidth: self.screenSize.height / 5, minHeight: 0, maxHeight: self.screenSize.height / 5)
                             
                             VStack {
                                 
                                 Text(switchAccessor.labelName)
-                                    .padding([.leading, .trailing], 8)
+                                    .padding([.leading, .trailing, .top], 8)
                                     .font(.title)
                                 Spacer()
                                 Text(switchAccessor.topicName_getOn)
                                     .padding([.leading, .trailing], 12)
-                                    .foregroundColor(Color.gray)
+                                    .foregroundColor(Color.init(UIColor(named: "darkGrayColor")!))
                                 Spacer()
                                 Text(switchAccessor.topicName_setOn)
-                                    .padding([.leading, .trailing], 12)
-                                    .foregroundColor(Color.gray)
+                                    .padding([.leading, .trailing, .bottom], 12)
+                                    .foregroundColor(Color.init(UIColor(named: "darkGrayColor")!))
                                 
-                            }.background(Color.init(red: 245/255, green: 180/255, blue: 135/255))
+                            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                            .background(Color.init(UIColor(named: "switchColor")!))
                             .cornerRadius(16)
                             .padding()
                             
@@ -85,47 +76,38 @@ struct MainView: View {
                         }
                     }.onDelete(perform: deleteSwitchAccessor)
                     
-                }
-                .sheet(isPresented: $isPresented, onDismiss: {
-                    print("ONDISMISS")
-//                    self.switchAccessorListVM.fetchAllSwitchAccessories()
-                    self.reflashVM()
-                }, content: {
-                    AddAccessoriesView(isPresented: self.$isPresented)
-                })
-                
-                List {
                     ForEach(self.valueAccessorListVM.valueAccessories, id: \.labelName) { valueAccessor in
                         HStack {
                             
                             ValueWidgetView(labelName: valueAccessor.labelName,
                                             valueType: valueAccessor.valueType == ValueType.Temperature.rawValue ? ValueType.Temperature : ValueType.Humidity,
                                             topicName: valueAccessor.topicName)
+                            .frame(minWidth: 0, maxWidth: self.screenSize.height / 5, minHeight: 0, maxHeight: self.screenSize.height / 5)
                             
                             VStack {
                                 
                                 Text(valueAccessor.labelName)
-                                    .padding([.leading, .trailing], 8)
+                                    .padding([.leading, .trailing, .top], 8)
                                     .font(.title)
                                 Spacer()
                                 Text(valueAccessor.topicName)
-                                    .padding([.leading, .trailing], 12)
-                                    .foregroundColor(Color.gray)
+                                    .padding([.leading, .trailing, .bottom], 12)
+                                    .foregroundColor(Color.init(UIColor(named: "darkGrayColor")!))
                                 
-                            }.background(Color.init(red: 135/255, green: 245/255, blue: 240/255))
+                            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                            .background(Color.init(UIColor(named: valueAccessor.valueType == ValueType.Temperature.rawValue ? "temperatureColor" : "humidityColor")!))
                             .cornerRadius(16)
                             .padding()
                         }
                     }.onDelete(perform: deleteValueAccessor)
-                                
                 }
                 .sheet(isPresented: $isPresented, onDismiss: {
                     print("ONDISMISS")
-//                    self.valueAccessorListVM.fetchAllValueAccessories()
                     self.reflashVM()
                 }, content: {
                     AddAccessoriesView(isPresented: self.$isPresented)
                 })
+                
             }
             .navigationBarTitle("Smart Home")
             .navigationBarItems(trailing: Button("Add Accessor") {

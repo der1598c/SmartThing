@@ -21,7 +21,7 @@ struct SwitchWidgetView: View {
         HStack {
             Image(self.model.switchWidgetModel.isOn! ? "power-ON" : "power-OFF")
                 .resizable()
-                .frame(width: 100, height: 100)
+                .frame(width: 60, height: 60)
             Button(self.model.switchWidgetModel.isOn! ? "ON" : "OFF") {
                 self.model.setSwitchOn(isOn: !self.model.switchWidgetModel.isOn!)
             }.foregroundColor(self.model.switchWidgetModel.isOn! ? Color.white : Color.gray)

@@ -14,6 +14,7 @@ struct AddAccessoriesView: View {
     @State var addSwitchAccessorVM = AddSwitchAccessorViewModel()
     @State var addValueAccessorVM = AddValueAccessorViewModel()
     @State private var accessorType: AccessorType = .SwitchAccessor
+    @State private var showAlert = false
     
     var body: some View {
         
@@ -48,19 +49,30 @@ struct AddAccessoriesView: View {
                     .padding()
             }
             
-            Button(self.accessorType == AccessorType.SwitchAccessor ? "Place Switch Accessor" : "Place Value Accessor") {
-                // place order
+            Button(action: {
                 if self.accessorType == AccessorType.SwitchAccessor {
-                    self.addSwitchAccessorVM.saveSwitchAccessor()
+                    self.addSwitchAccessorVM.saveSwitchAccessor() { success in
+                        self.isPresented = !success
+                        self.showAlert = !success
+                    }
                 } else {
-                    self.addValueAccessorVM.saveValueAccessor()
+                    self.addValueAccessorVM.saveValueAccessor() { success in
+                        self.isPresented = !success
+                        self.showAlert = !success
+                    }
                 }
-                self.isPresented = false
                 
+            }) {
+               HStack {
+                  Image(systemName: "arrow.uturn.down")
+                  Text(self.accessorType == AccessorType.SwitchAccessor ? "Place Switch Accessor" : "Place Value Accessor")
+               }
+            }.alert(isPresented: $showAlert) { () -> Alert in
+               return Alert(title: Text("Please provide complete information"))
             }.padding(16)
-                .foregroundColor(Color.white)
-                .background(Color.green)
-                .cornerRadius(10)
+            .foregroundColor(Color.white)
+            .background(Color.green)
+            .cornerRadius(10)
             
             Spacer()
             

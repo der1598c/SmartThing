@@ -15,7 +15,12 @@ class AddValueAccessorViewModel {
     var valueType: String = ""
     var topicName: String = ""
     
-    func saveValueAccessor() {
-        CoreDataManager.shared.saveAccessor(accessorVM: self)
+    func saveValueAccessor(success: @escaping (Bool) -> ()) {
+        if labelName.count != 0 && valueType.count != 0 && topicName.count != 0 {
+            CoreDataManager.shared.saveAccessor(accessorVM: self)
+            success(true)
+        } else {
+            success(false)
+        }
     }
 }
