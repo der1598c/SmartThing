@@ -47,14 +47,14 @@ struct MainView: View {
             VStack {
                 List {
                     
-                    ForEach(self.switchAccessorListVM.switchAccessories, id: \.labelName) { switchAccessor in
+                    ForEach(self.switchAccessorListVM.switchAccessories, id: \.uniqueID) { switchAccessor in
                         HStack {
                             
                             SwitchWidgetView(labelName: switchAccessor.labelName, topicName_getOn: switchAccessor.topicName_getOn, topicName_setOn: switchAccessor.topicName_setOn)
                                 .frame(minWidth: 0, maxWidth: self.screenSize.height / 5, minHeight: 0, maxHeight: self.screenSize.height / 5)
                             
                             VStack {
-                                
+//                                Text("\(switchAccessor.uniqueID)")
                                 Text(switchAccessor.labelName)
                                     .padding([.leading, .trailing, .top], 8)
                                     .font(.title)
@@ -76,7 +76,7 @@ struct MainView: View {
                         }
                     }.onDelete(perform: deleteSwitchAccessor)
                     
-                    ForEach(self.valueAccessorListVM.valueAccessories, id: \.labelName) { valueAccessor in
+                    ForEach(self.valueAccessorListVM.valueAccessories, id: \.uniqueID) { valueAccessor in
                         HStack {
                             
                             ValueWidgetView(labelName: valueAccessor.labelName,
@@ -85,7 +85,7 @@ struct MainView: View {
                             .frame(minWidth: 0, maxWidth: self.screenSize.height / 5, minHeight: 0, maxHeight: self.screenSize.height / 5)
                             
                             VStack {
-                                
+//                                Text("\(valueAccessor.uniqueID)")
                                 Text(valueAccessor.labelName)
                                     .padding([.leading, .trailing, .top], 8)
                                     .font(.title)

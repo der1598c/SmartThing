@@ -21,7 +21,7 @@ class SwitchAccessorListViewModel: ObservableObject {
     }
     
     func deleteSwitchAccessor(_ switchAccessorVM: SwitchAccessorViewModel) {
-        CoreDataManager.shared.deleteAccessor(labelName: switchAccessorVM.labelName, accessorType: .SwitchAccessor)
+        CoreDataManager.shared.deleteAccessor(uniqueID: switchAccessorVM.uniqueID, accessorType: .SwitchAccessor)
         fetchAllSwitchAccessories()
     }
     
@@ -36,11 +36,13 @@ class SwitchAccessorListViewModel: ObservableObject {
 
 class SwitchAccessorViewModel {
     
-    var labelName = ""
-    var topicName_getOn = ""
-    var topicName_setOn = ""
+    var uniqueID:UUID
+    var labelName: String
+    var topicName_getOn: String
+    var topicName_setOn: String
     
     init(switchAccessor: SwitchAccessor) {
+        self.uniqueID = switchAccessor.uniqueID!
         self.labelName = switchAccessor.labelName!
         self.topicName_getOn = switchAccessor.topicName_getOn!
         self.topicName_setOn = switchAccessor.topicName_setOn!

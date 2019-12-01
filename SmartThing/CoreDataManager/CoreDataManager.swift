@@ -19,12 +19,12 @@ class CoreDataManager {
         self.moc = moc
     }
     
-    private func fetchSwitchAccessor(labelName: String) -> SwitchAccessor? {
+    private func fetchSwitchAccessor(uniqueID: UUID) -> SwitchAccessor? {
         
         var switchAccessories = [SwitchAccessor]()
         
         let request: NSFetchRequest<SwitchAccessor> = SwitchAccessor.fetchRequest()
-        request.predicate = NSPredicate(format: "labelName == %@", labelName)
+        request.predicate = NSPredicate(format: "uniqueID == %@", uniqueID as CVarArg)
         
         do {
             switchAccessories = try self.moc.fetch(request)
@@ -36,12 +36,12 @@ class CoreDataManager {
         
     }
     
-    private func fetchValueAccessor(labelName: String) -> ValueAccessor? {
+    private func fetchValueAccessor(uniqueID: UUID) -> ValueAccessor? {
         
         var valueAccessories = [ValueAccessor]()
         
         let request: NSFetchRequest<ValueAccessor> = ValueAccessor.fetchRequest()
-        request.predicate = NSPredicate(format: "labelName == %@", labelName)
+        request.predicate = NSPredicate(format: "uniqueID == %@", uniqueID as CVarArg)
         
         do {
             valueAccessories = try self.moc.fetch(request)
@@ -53,12 +53,12 @@ class CoreDataManager {
         
     }
     
-    func deleteAccessor(labelName: String, accessorType: AccessorType) {
+    func deleteAccessor(uniqueID: UUID, accessorType: AccessorType) {
         
         switch accessorType {
         case .SwitchAccessor:
             do {
-                if let accessor = fetchSwitchAccessor(labelName: labelName) {
+                if let accessor = fetchSwitchAccessor(uniqueID: uniqueID) {
                     self.moc.delete(accessor)
                     try self.moc.save()
                 }
@@ -68,7 +68,7 @@ class CoreDataManager {
             break
         case .ValueAccessor:
             do {
-                if let accessor = fetchValueAccessor(labelName: labelName) {
+                if let accessor = fetchValueAccessor(uniqueID: uniqueID) {
                     self.moc.delete(accessor)
                     try self.moc.save()
                 }
@@ -118,17 +118,19 @@ class CoreDataManager {
         if accessorVM is AddValueAccessorViewModel {
             let valueAccessorVM = accessorVM as! AddValueAccessorViewModel
             let valueAccessor = ValueAccessor(context: self.moc)
+            valueAccessor.uniqueID = valueAccessorVM.uniqueID
             valueAccessor.labelName = valueAccessorVM.labelName
             valueAccessor.valueType = valueAccessorVM.valueType
             valueAccessor.topicName = valueAccessorVM.topicName
         }
         
         if accessorVM is AddSwitchAccessorViewModel {
-            let valueAccessorVM = accessorVM as! AddSwitchAccessorViewModel
+            let switchAccessorVM = accessorVM as! AddSwitchAccessorViewModel
             let switchAccessor = SwitchAccessor(context: self.moc)
-            switchAccessor.labelName = valueAccessorVM.labelName
-            switchAccessor.topicName_getOn = valueAccessorVM.topicName_getOn
-            switchAccessor.topicName_setOn = valueAccessorVM.topicName_setOn
+            switchAccessor.uniqueID = switchAccessorVM.uniqueID
+            switchAccessor.labelName = switchAccessorVM.labelName
+            switchAccessor.topicName_getOn = switchAccessorVM.topicName_getOn
+            switchAccessor.topicName_setOn = switchAccessorVM.topicName_setOn
         }
         
         do {

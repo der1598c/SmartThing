@@ -11,6 +11,7 @@ import SwiftUI
 
 class AddValueAccessorViewModel {
     
+    var uniqueID = UUID()
     var labelName: String = ""
     var valueType: String = ""
     var topicName: String = ""

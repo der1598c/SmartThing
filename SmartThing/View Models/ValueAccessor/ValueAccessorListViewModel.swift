@@ -21,7 +21,7 @@ class ValueAccessorListViewModel: ObservableObject {
     }
     
     func deleteValueAccessor(_ valueAccessorVM: ValueAccessorViewModel) {
-        CoreDataManager.shared.deleteAccessor(labelName: valueAccessorVM.labelName, accessorType: .ValueAccessor)
+        CoreDataManager.shared.deleteAccessor(uniqueID: valueAccessorVM.uniqueID, accessorType: .ValueAccessor)
         fetchAllValueAccessories()
     }
     
@@ -36,11 +36,13 @@ class ValueAccessorListViewModel: ObservableObject {
 
 class ValueAccessorViewModel {
     
-    var labelName = ""
-    var valueType = ""
-    var topicName = ""
+    var uniqueID:UUID
+    var labelName: String
+    var valueType: String
+    var topicName: String
     
     init(valueAccessor: ValueAccessor) {
+        self.uniqueID = valueAccessor.uniqueID!
         self.labelName = valueAccessor.labelName!
         self.valueType = valueAccessor.valueType!
         self.topicName = valueAccessor.topicName!

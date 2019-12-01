@@ -11,6 +11,7 @@ import SwiftUI
 
 class AddSwitchAccessorViewModel {
     
+    var uniqueID = UUID()
     var labelName: String = ""
     var topicName_getOn: String = ""
     var topicName_setOn: String = ""
