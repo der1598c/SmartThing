@@ -19,7 +19,7 @@
 		A90844EC2389917B003B4F7C /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90844EB2389917B003B4F7C /* NSManagedObjectContext+Extensions.swift */; };
 		A90844EF23899775003B4F7C /* AddSwitchAccessorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90844EE23899775003B4F7C /* AddSwitchAccessorViewModel.swift */; };
 		A90844F1238997B9003B4F7C /* SwitchAccessorListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90844F0238997B9003B4F7C /* SwitchAccessorListViewModel.swift */; };
-		A90844F72389F01E003B4F7C /* AddValueAccessorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90844F62389F01E003B4F7C /* AddValueAccessorViewModel.swift */; };
+		A90844F72389F01E003B4F7C /* AddOrUpdateValueAccessorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90844F62389F01E003B4F7C /* AddOrUpdateValueAccessorViewModel.swift */; };
 		A90844F92389F031003B4F7C /* ValueAccessorListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90844F82389F031003B4F7C /* ValueAccessorListViewModel.swift */; };
 		A9549B852388856D00611D31 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9549B842388856D00611D31 /* AppDelegate.swift */; };
 		A9549B872388856D00611D31 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9549B862388856D00611D31 /* SceneDelegate.swift */; };
@@ -29,6 +29,9 @@
 		A9549B912388857000611D31 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9549B8F2388857000611D31 /* LaunchScreen.storyboard */; };
 		A9549B9B2388863B00611D31 /* SwitchWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9549B9A2388863B00611D31 /* SwitchWidgetView.swift */; };
 		A9549B9D238888F000611D31 /* SwitchWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9549B9C238888F000611D31 /* SwitchWidgetViewModel.swift */; };
+		A9A3526E239691F700FC970B /* WidgetEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A3526D239691F700FC970B /* WidgetEnum.swift */; };
+		A9F5A3B22395351500055C0C /* ValueWidgetDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F5A3B12395351500055C0C /* ValueWidgetDetailsView.swift */; };
+		A9F5A3B423956F2500055C0C /* SwitchWidgetDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F5A3B323956F2500055C0C /* SwitchWidgetDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +48,7 @@
 		A90844EB2389917B003B4F7C /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
 		A90844EE23899775003B4F7C /* AddSwitchAccessorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSwitchAccessorViewModel.swift; sourceTree = "<group>"; };
 		A90844F0238997B9003B4F7C /* SwitchAccessorListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchAccessorListViewModel.swift; sourceTree = "<group>"; };
-		A90844F62389F01E003B4F7C /* AddValueAccessorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddValueAccessorViewModel.swift; sourceTree = "<group>"; };
+		A90844F62389F01E003B4F7C /* AddOrUpdateValueAccessorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrUpdateValueAccessorViewModel.swift; sourceTree = "<group>"; };
 		A90844F82389F031003B4F7C /* ValueAccessorListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueAccessorListViewModel.swift; sourceTree = "<group>"; };
 		A9549B812388856D00611D31 /* SmartThing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartThing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9549B842388856D00611D31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +60,9 @@
 		A9549B922388857000611D31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9549B9A2388863B00611D31 /* SwitchWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchWidgetView.swift; sourceTree = "<group>"; };
 		A9549B9C238888F000611D31 /* SwitchWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchWidgetViewModel.swift; sourceTree = "<group>"; };
+		A9A3526D239691F700FC970B /* WidgetEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEnum.swift; sourceTree = "<group>"; };
+		A9F5A3B12395351500055C0C /* ValueWidgetDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueWidgetDetailsView.swift; sourceTree = "<group>"; };
+		A9F5A3B323956F2500055C0C /* SwitchWidgetDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchWidgetDetailsView.swift; sourceTree = "<group>"; };
 		EC0E6709CA1B153DFA72CA3B /* Pods_SmartThing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartThing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -93,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				A90844D6238923C9003B4F7C /* ValueWidgetView.swift */,
+				A9F5A3B12395351500055C0C /* ValueWidgetDetailsView.swift */,
 				A90844D8238923DA003B4F7C /* ValueWidgetViewModel.swift */,
 			);
 			path = ValueWidget;
@@ -144,7 +151,7 @@
 		A90844F52389EFF9003B4F7C /* ValueAccessor */ = {
 			isa = PBXGroup;
 			children = (
-				A90844F62389F01E003B4F7C /* AddValueAccessorViewModel.swift */,
+				A90844F62389F01E003B4F7C /* AddOrUpdateValueAccessorViewModel.swift */,
 				A90844F82389F031003B4F7C /* ValueAccessorListViewModel.swift */,
 			);
 			path = ValueAccessor;
@@ -200,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				A9549B9A2388863B00611D31 /* SwitchWidgetView.swift */,
+				A9F5A3B323956F2500055C0C /* SwitchWidgetDetailsView.swift */,
 				A9549B9C238888F000611D31 /* SwitchWidgetViewModel.swift */,
 			);
 			path = SwitchWidget;
@@ -208,6 +216,7 @@
 		A9549B99238885F200611D31 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				A9A3526D239691F700FC970B /* WidgetEnum.swift */,
 				A90844D52389239A003B4F7C /* ValueWidget */,
 				A9549B982388859500611D31 /* SwitchWidget */,
 			);
@@ -343,8 +352,11 @@
 				A90844F1238997B9003B4F7C /* SwitchAccessorListViewModel.swift in Sources */,
 				A90844F92389F031003B4F7C /* ValueAccessorListViewModel.swift in Sources */,
 				A90844EC2389917B003B4F7C /* NSManagedObjectContext+Extensions.swift in Sources */,
+				A9F5A3B22395351500055C0C /* ValueWidgetDetailsView.swift in Sources */,
 				A9549B852388856D00611D31 /* AppDelegate.swift in Sources */,
 				A90844E623898E49003B4F7C /* AccessoriesModel.xcdatamodeld in Sources */,
+				A9F5A3B423956F2500055C0C /* SwitchWidgetDetailsView.swift in Sources */,
+				A9A3526E239691F700FC970B /* WidgetEnum.swift in Sources */,
 				A9549B872388856D00611D31 /* SceneDelegate.swift in Sources */,
 				A90844EF23899775003B4F7C /* AddSwitchAccessorViewModel.swift in Sources */,
 				A9549B9D238888F000611D31 /* SwitchWidgetViewModel.swift in Sources */,
@@ -352,7 +364,7 @@
 				A90844E1238955E8003B4F7C /* MqttManagerDelegate.swift in Sources */,
 				A90844E923899154003B4F7C /* CoreDataManager.swift in Sources */,
 				A90844E323898CA3003B4F7C /* AddAccessoriesView.swift in Sources */,
-				A90844F72389F01E003B4F7C /* AddValueAccessorViewModel.swift in Sources */,
+				A90844F72389F01E003B4F7C /* AddOrUpdateValueAccessorViewModel.swift in Sources */,
 				A9549B9B2388863B00611D31 /* SwitchWidgetView.swift in Sources */,
 				A90844D42388A242003B4F7C /* MqttManager.swift in Sources */,
 				A90844D9238923DA003B4F7C /* ValueWidgetViewModel.swift in Sources */,

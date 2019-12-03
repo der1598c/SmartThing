@@ -14,6 +14,7 @@ struct SwitchWidgetView: View {
     
     init(labelName: String, topicName_getOn: String, topicName_setOn: String) {
         self.model = SwitchWidgetViewModel(isOn: true, labelName: labelName, topicName_getOn: topicName_getOn, topicName_setOn: topicName_setOn)
+        self.model.currentMqttStatus = .OnDisconnected
     }
     
     var body: some View {
@@ -22,9 +23,31 @@ struct SwitchWidgetView: View {
             Image(self.model.switchWidgetModel.isOn! ? "power-ON" : "power-OFF")
                 .resizable()
                 .frame(width: 60, height: 60)
-            Button(self.model.switchWidgetModel.isOn! ? "ON" : "OFF") {
-                self.model.setSwitchOn(isOn: !self.model.switchWidgetModel.isOn!)
-            }.foregroundColor(self.model.switchWidgetModel.isOn! ? Color.white : Color.gray)
+            VStack {
+                Text(String("Turn it"))
+                    .foregroundColor(self.model.switchWidgetModel.isOn! ? Color.white : Color.gray)
+                Button(self.model.switchWidgetModel.isOn! ? "OFF" : "ON") {
+                    self.model.setSwitchOn(isOn: !self.model.switchWidgetModel.isOn!)
+                }.foregroundColor(self.model.switchWidgetModel.isOn! ? Color.white : Color.gray)
+                
+                HStack {
+                    if self.model.currentMqttStatus == .OnConnected {
+                        Image("onConnected")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                    }
+                    if self.model.currentMqttStatus == .OnDisconnected {
+                        Image("onDisconnected")
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                    }
+                    if self.model.currentMqttStatus == .OnReceived {
+                        Image("onReceived")
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                    }
+                }
+            }
         }
         .onTapGesture {
             self.model.setSwitchOn(isOn: !self.model.switchWidgetModel.isOn!)

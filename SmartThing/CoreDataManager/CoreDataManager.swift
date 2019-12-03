@@ -115,8 +115,8 @@ class CoreDataManager {
     
     func saveAccessor<T>(accessorVM: T) {
         
-        if accessorVM is AddValueAccessorViewModel {
-            let valueAccessorVM = accessorVM as! AddValueAccessorViewModel
+        if accessorVM is AddOrUpdateValueAccessorViewModel {
+            let valueAccessorVM = accessorVM as! AddOrUpdateValueAccessorViewModel
             let valueAccessor = ValueAccessor(context: self.moc)
             valueAccessor.uniqueID = valueAccessorVM.uniqueID
             valueAccessor.labelName = valueAccessorVM.labelName
@@ -124,8 +124,8 @@ class CoreDataManager {
             valueAccessor.topicName = valueAccessorVM.topicName
         }
         
-        if accessorVM is AddSwitchAccessorViewModel {
-            let switchAccessorVM = accessorVM as! AddSwitchAccessorViewModel
+        if accessorVM is AddOrUpdateSwitchAccessorViewModel {
+            let switchAccessorVM = accessorVM as! AddOrUpdateSwitchAccessorViewModel
             let switchAccessor = SwitchAccessor(context: self.moc)
             switchAccessor.uniqueID = switchAccessorVM.uniqueID
             switchAccessor.labelName = switchAccessorVM.labelName
@@ -140,6 +140,56 @@ class CoreDataManager {
         }
         
     }
+    
+    func updateAccessor<T>(accessorVM: T, updateSuccess: @escaping (Bool) -> ()) {
+        
+        if accessorVM is AddOrUpdateValueAccessorViewModel {
+            do {
+                let valueAccessorVM = accessorVM as! AddOrUpdateValueAccessorViewModel
+                if let accessor = fetchValueAccessor(uniqueID: valueAccessorVM.uniqueID) {
+                    
+                    if valueAccessorVM.labelName.count <= 0 && valueAccessorVM.topicName.count <= 0 {
+                        updateSuccess(false)
+                        return
+                    }
+                    
+                    if valueAccessorVM.labelName.count > 0 { accessor.setValue(valueAccessorVM.labelName, forKey: "labelName") }
+                    if valueAccessorVM.topicName.count > 0 { accessor.setValue(valueAccessorVM.topicName, forKey: "topicName") }
+                    try self.moc.save()
+                    updateSuccess(true)
+                }
+            } catch let error as NSError {
+                print(error)
+                updateSuccess(false)
+            }
+        }
+        
+        if accessorVM is AddOrUpdateSwitchAccessorViewModel {
+            do {
+                let switchAccessorVM = accessorVM as! AddOrUpdateSwitchAccessorViewModel
+                if let accessor = fetchSwitchAccessor(uniqueID: switchAccessorVM.uniqueID) {
+                    
+                    if switchAccessorVM.labelName.count <= 0 && switchAccessorVM.topicName_getOn.count <= 0 && switchAccessorVM.topicName_setOn.count <= 0 {
+                        updateSuccess(false)
+                        return
+                    }
+                    
+                    if switchAccessorVM.labelName.count > 0 { accessor.setValue(switchAccessorVM.labelName, forKey: "labelName") }
+                    if switchAccessorVM.topicName_getOn.count > 0 { accessor.setValue(switchAccessorVM.topicName_getOn, forKey: "topicName_getOn") }
+                    if switchAccessorVM.topicName_setOn.count > 0 { accessor.setValue(switchAccessorVM.topicName_setOn, forKey: "topicName_setOn") }
+                    try self.moc.save()
+                    updateSuccess(true)
+                } else {
+                    
+                }
+            } catch let error as NSError {
+                print(error)
+                updateSuccess(false)
+            }
+        }
+        
+    }
+    
 }
 
 enum AccessorType {

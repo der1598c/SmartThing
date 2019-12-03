@@ -13,6 +13,7 @@ struct MainView: View {
     @ObservedObject var switchAccessorListVM: SwitchAccessorListViewModel
     @ObservedObject var valueAccessorListVM: ValueAccessorListViewModel
     @State private var isPresented: Bool = false
+    @State private var isNeedUpdatete: Bool = false
     
     let screenSize = UIScreen.main.bounds
     
@@ -35,9 +36,12 @@ struct MainView: View {
         }
     }
     
-    private func reflashVM() {
-        self.switchAccessorListVM.fetchAllSwitchAccessories()
-        self.valueAccessorListVM.fetchAllValueAccessories()
+    private func refetchVMAndreflashView() {
+        if self.isNeedUpdatete {
+            self.switchAccessorListVM.fetchAllSwitchAccessories()
+            self.valueAccessorListVM.fetchAllValueAccessories()
+        }
+        self.isNeedUpdatete = false
     }
     
     var body: some View {
@@ -50,65 +54,77 @@ struct MainView: View {
                     ForEach(self.switchAccessorListVM.switchAccessories, id: \.uniqueID) { switchAccessor in
                         HStack {
                             
-                            SwitchWidgetView(labelName: switchAccessor.labelName, topicName_getOn: switchAccessor.topicName_getOn, topicName_setOn: switchAccessor.topicName_setOn)
-                                .frame(minWidth: 0, maxWidth: self.screenSize.height / 5, minHeight: 0, maxHeight: self.screenSize.height / 5)
-                            
-                            VStack {
-//                                Text("\(switchAccessor.uniqueID)")
-                                Text(switchAccessor.labelName)
-                                    .padding([.leading, .trailing, .top], 8)
-                                    .font(.title)
-                                Spacer()
-                                Text(switchAccessor.topicName_getOn)
-                                    .padding([.leading, .trailing], 12)
-                                    .foregroundColor(Color.init(UIColor(named: "darkGrayColor")!))
-                                Spacer()
-                                Text(switchAccessor.topicName_setOn)
-                                    .padding([.leading, .trailing, .bottom], 12)
-                                    .foregroundColor(Color.init(UIColor(named: "darkGrayColor")!))
+                            NavigationLink(destination:
                                 
-                            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                            .background(Color.init(UIColor(named: "switchColor")!))
-                            .cornerRadius(16)
-                            .padding()
+                                SwitchWidgetDetailsView(uniqueID: switchAccessor.uniqueID, labelName: switchAccessor.labelName, topicName_getOn: switchAccessor.topicName_getOn, topicName_setOn: switchAccessor.topicName_setOn, isNeedUpdatete: self.$isNeedUpdatete)
+                                    .onDisappear(){
+                                        self.refetchVMAndreflashView()
+                                    }
+                            ) {
+                               
+                                HStack {
+                                    HStack {
+                                        SwitchWidgetView(labelName: switchAccessor.labelName, topicName_getOn: switchAccessor.topicName_getOn, topicName_setOn: switchAccessor.topicName_setOn)
+                                        .frame(minWidth: 0, maxWidth: self.screenSize.width / 2, minHeight: 0, maxHeight: self.screenSize.height / 5)
+                                    }.padding()
+                                    
+                                    Text(switchAccessor.labelName)
+                                        .font(.title)
+                                        .padding([.leading, .trailing, .top, .bottom], 12)
+                                        .foregroundColor(Color.init(UIColor(named: "switchLiteColor")!))
+                                        
+                                    Spacer()
+                                }
+                                .background(Color.init(UIColor(named: "switchColor")!))
+                                .cornerRadius(12)
+                            }
                             
-                            Spacer()
                         }
                     }.onDelete(perform: deleteSwitchAccessor)
                     
                     ForEach(self.valueAccessorListVM.valueAccessories, id: \.uniqueID) { valueAccessor in
                         HStack {
                             
-                            ValueWidgetView(labelName: valueAccessor.labelName,
-                                            valueType: valueAccessor.valueType == ValueType.Temperature.rawValue ? ValueType.Temperature : ValueType.Humidity,
-                                            topicName: valueAccessor.topicName)
-                            .frame(minWidth: 0, maxWidth: self.screenSize.height / 5, minHeight: 0, maxHeight: self.screenSize.height / 5)
-                            
-                            VStack {
-//                                Text("\(valueAccessor.uniqueID)")
-                                Text(valueAccessor.labelName)
-                                    .padding([.leading, .trailing, .top], 8)
-                                    .font(.title)
-                                Spacer()
-                                Text(valueAccessor.topicName)
-                                    .padding([.leading, .trailing, .bottom], 12)
-                                    .foregroundColor(Color.init(UIColor(named: "darkGrayColor")!))
+                            NavigationLink(destination:
                                 
-                            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                            .background(Color.init(UIColor(named: valueAccessor.valueType == ValueType.Temperature.rawValue ? "temperatureColor" : "humidityColor")!))
-                            .cornerRadius(16)
-                            .padding()
+                                ValueWidgetDetailsView(uniqueID: valueAccessor.uniqueID, labelName: valueAccessor.labelName, topicName: valueAccessor.topicName, valueType: valueAccessor.valueType, isNeedUpdatete: self.$isNeedUpdatete)
+                                    .onDisappear(){
+                                        self.refetchVMAndreflashView()
+                                    }
+                                
+                            ) {
+                               
+                                HStack {
+                                    VStack {
+                                        ValueWidgetView(labelName: valueAccessor.labelName,
+                                                       valueType: valueAccessor.valueType == ValueType.Temperature.rawValue ? ValueType.Temperature : ValueType.Humidity,
+                                                       topicName: valueAccessor.topicName)
+                                        .frame(minWidth: 0, maxWidth: self.screenSize.width / 1.2, minHeight: 0, maxHeight: self.screenSize.height / 5)
+                                    }.padding()
+                                    
+                                    Text(valueAccessor.labelName)
+                                        .font(.title)
+                                        .padding([.leading, .trailing, .top, .bottom], 12)
+                                        .foregroundColor(Color.init(UIColor(named: valueAccessor.valueType == ValueType.Temperature.rawValue ? "temperatureLiteColor" : "humidityLiteColor")!))
+                                    
+                                    Spacer()
+                                }
+                                .background(Color.init(UIColor(named: valueAccessor.valueType == ValueType.Temperature.rawValue ? "temperatureColor" : "humidityColor")!))
+                                .cornerRadius(12)
+                                
+                            }
                         }
                     }.onDelete(perform: deleteValueAccessor)
                 }
                 .sheet(isPresented: $isPresented, onDismiss: {
                     print("ONDISMISS")
-                    self.reflashVM()
+                    self.refetchVMAndreflashView()
                 }, content: {
-                    AddAccessoriesView(isPresented: self.$isPresented)
+                    AddAccessorView(isPresented: self.$isPresented, isNeedUpdatete: self.$isNeedUpdatete)
                 })
                 
             }
+            .navigationViewStyle(DefaultNavigationViewStyle())
             .navigationBarTitle("Smart Home")
             .navigationBarItems(trailing: Button("Add Accessor") {
                 self.isPresented = true

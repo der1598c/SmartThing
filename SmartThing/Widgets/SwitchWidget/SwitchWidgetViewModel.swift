@@ -12,6 +12,7 @@ import CocoaMQTT
 class SwitchWidgetViewModel: ObservableObject {
     
     @Published var switchWidgetModel = SwitchWidgetModel()
+    @Published var currentMqttStatus: MqttStatus = .OnDisconnected
     
     init(isOn: Bool, labelName: String, topicName_getOn: String, topicName_setOn: String) {
         self.switchWidgetModel.isOn = isOn
@@ -27,6 +28,11 @@ class SwitchWidgetViewModel: ObservableObject {
     }
     
     func setSwitchOn(isOn: Bool) {
+        
+        if self.currentMqttStatus == .OnReceived {
+            return
+        }
+        
         if self.switchWidgetModel.isOn != isOn {
             self.switchWidgetModel.isOn = isOn
         }
@@ -34,18 +40,19 @@ class SwitchWidgetViewModel: ObservableObject {
         let message = isOn == true ? Status.ON.rawValue : Status.OFF.rawValue
         MqttManager.shared.publish(message: message, topic: self.switchWidgetModel.topicName_setOn!)
     }
-    
 }
 
 extension SwitchWidgetViewModel: MqttManagerDelegate {
     
     func onMqttConnected() {
         print("SwitchWidgetViewModel\nMqtt connected")
+        self.currentMqttStatus = .OnConnected
         subscribeTopic()
     }
     
     func onMqttDisconnected() {
         print("SwitchWidgetViewModel\nMqtt disconnected")
+        self.currentMqttStatus = .OnDisconnected
     }
     
     func onMqttMessageReceived(message: String, topic: String) {
@@ -53,7 +60,11 @@ extension SwitchWidgetViewModel: MqttManagerDelegate {
         
         if topic == self.switchWidgetModel.topicName_getOn {
             let status = message == Status.ON.rawValue ? true : false
-            setSwitchOn(isOn: status)
+            self.currentMqttStatus = .OnReceived
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                self.setSwitchOn(isOn: status)
+                self.currentMqttStatus = .OnConnected
+            }
         }
         
     }

@@ -1,18 +1,19 @@
 //
-//  AddAccessoriesView.swift
+//  AddAccessorView.swift
 //  SmartThing
 //
-//  Created by Leyee.H on 2019/11/23.
+//  Created by Leyee.H on 2019/12/3.
 //  Copyright © 2019 Leyee. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddAccessoriesView: View {
+struct AddAccessorView: View {
     
     @Binding var isPresented: Bool
-    @State var addSwitchAccessorVM = AddSwitchAccessorViewModel()
-    @State var addValueAccessorVM = AddValueAccessorViewModel()
+    @Binding var isNeedUpdatete: Bool
+    @State var addSwitchAccessorVM = AddOrUpdateSwitchAccessorViewModel()
+    @State var addValueAccessorVM = AddOrUpdateValueAccessorViewModel()
     @State private var accessorType: AccessorType = .SwitchAccessor
     @State private var showAlert = false
     
@@ -54,11 +55,13 @@ struct AddAccessoriesView: View {
                     self.addSwitchAccessorVM.saveSwitchAccessor() { success in
                         self.isPresented = !success
                         self.showAlert = !success
+                        self.isNeedUpdatete = success
                     }
                 } else {
                     self.addValueAccessorVM.saveValueAccessor() { success in
                         self.isPresented = !success
                         self.showAlert = !success
+                        self.isNeedUpdatete = success
                     }
                 }
                 
@@ -78,16 +81,14 @@ struct AddAccessoriesView: View {
             
         }
         }.padding()
-        
-            
-            .navigationBarTitle(self.accessorType == AccessorType.SwitchAccessor ? "Add Switch Accessor" : "Add Value Accessor")
+        .navigationBarTitle(self.accessorType == AccessorType.SwitchAccessor ? "Add Switch Accessor" : "Add Value Accessor")
         }
         
     }
 }
 
-struct AddAccessoriesView_Previews: PreviewProvider {
+struct AddAccessorView_Previews: PreviewProvider {
     static var previews: some View {
-        AddAccessoriesView(isPresented: .constant(false))
+        AddAccessorView(isPresented: .constant(false), isNeedUpdatete: .constant(false))
     }
 }

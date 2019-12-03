@@ -11,12 +11,25 @@ import Foundation
 class ValueWidgetViewModel: ObservableObject {
     
     @Published var valueWidgetModel = ValueWidgetModel()
+    @Published var currentMqttStatus: MqttStatus = .OnDisconnected
+    private var keyOfIsCelsius = "IS-CELSIUS"
     
     init(value: Double, valueType: ValueType, labelName: String, topicName: String) {
         self.valueWidgetModel.value = value
         self.valueWidgetModel.valueType = valueType
         self.valueWidgetModel.labelName = labelName
         self.valueWidgetModel.topicName = topicName
+        self.keyOfIsCelsius.append(self.valueWidgetModel.labelName!)
+        self.keyOfIsCelsius.append(self.valueWidgetModel.topicName!)
+        
+        let userDefaults = UserDefaults.standard
+        if let isCelsius: Bool = userDefaults.bool(forKey: keyOfIsCelsius) {
+            if isCelsius {
+                self.valueWidgetModel.unit = .Celsius
+            } else {
+                self.valueWidgetModel.unit = .Fahrenheit
+            }
+        }
         
         MqttManager.shared.delegate.add(self)
         
@@ -46,6 +59,10 @@ class ValueWidgetViewModel: ObservableObject {
     
     func toggleUnit() {
         
+        if self.currentMqttStatus == .OnReceived {
+            return
+        }
+        
         if self.valueWidgetModel.unit == .Fahrenheit {
             setUnit(unit: .Celsius)
         } else {
@@ -57,7 +74,9 @@ class ValueWidgetViewModel: ObservableObject {
     private func setUnit(unit: UnitType) {
         
         self.valueWidgetModel.unit = unit
-        
+        let isCelsius: Bool = unit == .Celsius
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(isCelsius, forKey: keyOfIsCelsius)
     }
     
 }
@@ -66,11 +85,13 @@ extension ValueWidgetViewModel: MqttManagerDelegate {
     
     func onMqttConnected() {
         print("ValueWidgetViewModel\nMqtt connected")
+        self.currentMqttStatus = .OnConnected
         subscribeTopic()
     }
     
     func onMqttDisconnected() {
         print("ValueWidgetViewModel\nMqtt disconnected")
+        self.currentMqttStatus = .OnDisconnected
     }
     
     func onMqttMessageReceived(message: String, topic: String) {
@@ -78,7 +99,12 @@ extension ValueWidgetViewModel: MqttManagerDelegate {
         
         if(topic == self.valueWidgetModel.topicName) {
             let value = Double(message)!
-            setValue(value: value)
+            self.currentMqttStatus = .OnReceived
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                self.setValue(value: value)
+                self.currentMqttStatus = .OnConnected
+            }
+            
         }
         
     }
