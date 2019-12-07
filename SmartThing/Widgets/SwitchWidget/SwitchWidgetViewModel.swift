@@ -29,10 +29,6 @@ class SwitchWidgetViewModel: ObservableObject {
     
     func setSwitchOn(isOn: Bool) {
         
-        if self.currentMqttStatus == .OnReceived {
-            return
-        }
-        
         if self.switchWidgetModel.isOn != isOn {
             self.switchWidgetModel.isOn = isOn
         }
@@ -61,8 +57,8 @@ extension SwitchWidgetViewModel: MqttManagerDelegate {
         if topic == self.switchWidgetModel.topicName_getOn {
             let status = message == Status.ON.rawValue ? true : false
             self.currentMqttStatus = .OnReceived
+            self.setSwitchOn(isOn: status)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                self.setSwitchOn(isOn: status)
                 self.currentMqttStatus = .OnConnected
             }
         }

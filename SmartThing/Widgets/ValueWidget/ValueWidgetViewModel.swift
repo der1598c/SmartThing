@@ -59,10 +59,6 @@ class ValueWidgetViewModel: ObservableObject {
     
     func toggleUnit() {
         
-        if self.currentMqttStatus == .OnReceived {
-            return
-        }
-        
         if self.valueWidgetModel.unit == .Fahrenheit {
             setUnit(unit: .Celsius)
         } else {
@@ -100,8 +96,8 @@ extension ValueWidgetViewModel: MqttManagerDelegate {
         if(topic == self.valueWidgetModel.topicName) {
             let value = Double(message)!
             self.currentMqttStatus = .OnReceived
+            self.setValue(value: value)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                self.setValue(value: value)
                 self.currentMqttStatus = .OnConnected
             }
             
